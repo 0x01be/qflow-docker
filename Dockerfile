@@ -14,6 +14,9 @@ RUN make install
 
 FROM alpine:3.12.0
 
+RUN apk add --no-cache --virtual build-dependencies \
+    tcsh
+
 COPY --from=builder /opt/qflow/ /opt/qflow/
 
 ENV PATH /opt/qflow/bin/:$PATH
