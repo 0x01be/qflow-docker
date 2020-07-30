@@ -12,6 +12,9 @@ COPY --from=magic /opt/magic/ /opt/magic/
 ENV PATH $PATH:/opt/yosys/bin:/opt/magic/bin/
 
 RUN apk add --no-cache --virtual build-dependencies \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
     git \
     build-base \
     python3-dev
@@ -27,6 +30,9 @@ RUN make install
 FROM alpine:3.12.0
 
 RUN apk add --no-cache --virtual runtime-dependencies \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
     tcl \
     tk \
     xf86-video-dummy \
