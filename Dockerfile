@@ -27,7 +27,7 @@ RUN ./configure --prefix=/opt/qflow/ && make
 
 RUN make install
 
-FROM alpine:3.12.0
+FROM 0x01be/xpra
 
 RUN apk add --no-cache --virtual runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
@@ -35,15 +35,16 @@ RUN apk add --no-cache --virtual runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
     tcl \
     tk \
-    xf86-video-dummy \
-    xorg-server \
-    tcsh
-
-COPY ./xorg.conf /xorg.conf
-#Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./0.log -config ./xorg.conf :0
-#ENV DISPLAY :0
+    tcsh \
+    gtk+3.0 \
+    python3-tkinter
 
 COPY --from=builder /opt/qflow/ /opt/qflow/
+COPY --from=yosys /opt/yosys/ /opt/yosys/
+COPY --from=magic /opt/magic/ /opt/magic/
 
-ENV PATH /opt/qflow/bin/:$PATH
+ENV PATH $PATH:/opt/qflow/bin/:/opt/magic/bin/:/opt/yosys/bin/
 
+EXPOSE 10000
+
+CMD /usr/bin/xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child="qflow gui" --exit-with-children --daemon=no --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1920x1080x24+32 -nolisten tcp -noreset" --pulseaudio=no --notifications=no --bell=no --mdns=no
