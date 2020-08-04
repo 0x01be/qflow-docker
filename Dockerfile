@@ -1,7 +1,7 @@
 FROM 0x01be/yosys as yosys
 FROM 0x01be/magic as magic
 
-FROM alpine:3.12.0 as builder
+FROM 0x01be/alpine:edge as builder
 
 COPY --from=yosys /opt/yosys/ /opt/yosys/
 
@@ -11,10 +11,7 @@ COPY --from=magic /opt/magic/ /opt/magic/
 
 ENV PATH $PATH:/opt/yosys/bin:/opt/magic/bin/
 
-RUN apk add --no-cache --virtual build-dependencies \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+RUN apk add --no-cache --virtual qflow-build-dependencies \
     git \
     build-base \
     python3-dev
@@ -29,10 +26,7 @@ RUN make install
 
 FROM 0x01be/xpra
 
-RUN apk add --no-cache --virtual runtime-dependencies \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+RUN apk add --no-cache --virtual qflow-runtime-dependencies \
     tcl \
     tk \
     tcsh \
