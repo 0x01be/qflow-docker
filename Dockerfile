@@ -9,7 +9,7 @@ FROM 0x01be/base as build
 
 COPY --from=yosys /opt/yosys/ /opt/yosys/
 COPY --from=replace /opt/replace/ /opt/replace/
-COPY --from=replace /opt/qrouter/ /opt/qrouter/
+COPY --from=qrouter /opt/qrouter/ /opt/qrouter/
 COPY --from=magic /opt/magic/ /opt/magic/
 COPY --from=netgen /opt/netgen/ /opt/netgen/
 
