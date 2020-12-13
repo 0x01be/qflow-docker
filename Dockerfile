@@ -1,5 +1,6 @@
 FROM 0x01be/yosys as yosys
 FROM 0x01be/replace as replace
+FROM 0x01be/qrouter as qrouter
 FROM 0x01be/magic:xpra-threads as magic
 FROM 0x01be/netgen:xpra as netgen
 FROM 0x01be/openroad:xpra as openroad
@@ -8,6 +9,7 @@ FROM 0x01be/base as build
 
 COPY --from=yosys /opt/yosys/ /opt/yosys/
 COPY --from=replace /opt/replace/ /opt/replace/
+COPY --from=replace /opt/qrouter/ /opt/qrouter/
 COPY --from=magic /opt/magic/ /opt/magic/
 COPY --from=netgen /opt/netgen/ /opt/netgen/
 
